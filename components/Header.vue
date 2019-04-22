@@ -16,7 +16,7 @@
                 <!-- Button -->
                 <div class="v-align-middle">
                   <nuxt-link
-                    to="/signin" 
+                    to="/signin"
                     class="buy-template button small rounded no-label-on-mobile no-margin-bottom fade-location">
                     Sign in
                   </nuxt-link>
@@ -32,6 +32,10 @@
           </nav>
           <nav class="navigation nav-block primary-navigation nav-left sub-menu-indicator">
             <ul>
+              <li>
+                <el-input placeholder="Search" v-model="search"></el-input>
+              </li>
+
               <li class="contains-sub-menu">
                 <a href="index.html">Demos</a>
                 <ul class="sub-menu">
@@ -194,7 +198,11 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      search: ''
+    }
+  }
 }
 </script>
 
