@@ -15,7 +15,11 @@
               <li>
                 <!-- Button -->
                 <div class="v-align-middle">
-                  <a href="https://themeforest.net/cart/configure_before_adding/21177767?license=regular&size=source&support=bundle_6month" class="buy-template button small rounded no-label-on-mobile no-margin-bottom fade-location">Buy Faulkner</a>
+                  <nuxt-link
+                    to="/signin" 
+                    class="buy-template button small rounded no-label-on-mobile no-margin-bottom fade-location">
+                    Sign in
+                  </nuxt-link>
                 </div>
               </li>
               <li class="aux-navigation hide">
