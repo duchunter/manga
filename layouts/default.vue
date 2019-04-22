@@ -17,4 +17,8 @@
 .page-enter, .page-leave-active {
   opacity: 0
 }
+
+textarea {
+  min-height: 20px;
+}
 </style>

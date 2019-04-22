@@ -6,12 +6,53 @@
         <div class="column width-12 nav-bar-inner">
           <div class="logo">
             <div class="logo-inner">
-              <a href="/"><img src="/img/logo/logo-dark.png" alt="Faulkner Logo" /></a>
+              <nuxt-link tag="a" to="/"><img src="/img/logo/logo-ph.png" alt="Faulkner Logo" /></nuxt-link>
               <a href="/"><img src="/img/logo/logo.png" alt="Faulkner Logo" /></a>
             </div>
           </div>
           <nav class="navigation nav-block secondary-navigation nav-right">
             <ul>
+              <li>
+                <!-- Dropdown Login -->
+                <div class="v-align-middle">
+                  <div class="dropdown">
+                    <a href="#" class="button small rounded no-page-fade no-margin-bottom"><span class="icon-lock left"></span>Sign In</a>
+                    <div class="dropdown-list custom-content">
+                      <h5>Access Your Account</h5>
+                      <div class="login-form-container">
+                        <form class="login-form" action="#" method="post" novalidate>
+                          <div class="row">
+                            <div class="column width-12">
+                              <div class="field-wrapper">
+                                <input type="text" name="login[email]" class="form-name form-element rounded small" placeholder="E-mail" tabindex="1" required>
+                              </div>
+                            </div>
+                            <div class="column width-12">
+                              <div class="field-wrapper">
+                                <input type="password" name="login[password]" class="form-email form-element rounded small" placeholder="Password" tabindex="2" required>
+                              </div>
+                            </div>
+                            <div class="column width-12">
+                              <div class="row flex">
+                                <div class="column width-6">
+                                  <input type="submit" value="Sign In" class="form-submit button small rounded bkg-theme bkg-hover-theme color-white color-hover-white">
+                                </div>
+                                <div class="column width-6 v-align-middle right">
+                                  <div>
+                                    <a class="recuperate-password" href="">Password?</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                        <div class="form-response"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              
               <li>
                 <!-- Button -->
                 <div class="v-align-middle">
@@ -36,43 +77,12 @@
                 <el-input placeholder="Search" v-model="search"></el-input>
               </li>
 
-              <li class="contains-sub-menu">
-                <a href="index.html">Demos</a>
-                <ul class="sub-menu">
-                  <li>
-                    <a href="homepage-consulting.html">Consulting</a>
-                  </li>
-                  <li>
-                    <a href="homepage-crowdfunding.html">Crowdfunding <span class="label rounded bkg-theme color-white pull-right">New</span></a>
-                  </li>
-                </ul>
-              </li>
-
-              <li class="contains-sub-menu">
-                <a href="about-style-one.html">Pages</a>
-                <ul class="sub-menu">
-                  <li class="contains-sub-menu">
-                    <a href="about-style-one.html">About</a>
-                    <ul class="sub-menu">
-                      <li>
-                        <a href="about-style-one.html">About Original</a>
-                      </li>
-                      <li>
-                        <a href="about-style-two.html">About Style 2</a>
-                      </li>
-                      <li>
-                        <a href="about-style-three.html">About Style 3</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="maintenance.html">Maintenance</a>
-                  </li>
-                </ul>
-              </li>
+              <nuxt-link tag="li" to="/" active-class="current" exact>
+                <a>Popular</a>
+              </nuxt-link>
 
               <li class="contains-mega-sub-menu">
-                <a href="elements-accordions.html">Elements</a>
+                <a>Genre</a>
                 <ul class="mega-sub-menu">
                   <li>
                     <a href="elements-column-structure.html">Grid Structure</a>
@@ -106,87 +116,28 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="elements-forms.html">Forms</a>
+                    <a href="elements-lightbox.html">Media</a>
                     <ul>
                       <li>
-                        <a href="elements-forms.html">Contact Forms</a>
+                        <a href="elements-lightbox.html">Lightbox</a>
                       </li>
                       <li>
-                        <a href="elements-signup-forms.html">Subscribe Forms</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="elements-accordions.html">UI</a>
-                    <ul>
-                      <li>
-                        <a href="elements-accordions.html">Accordions</a>
+                        <a href="elements-maps.html">Maps</a>
                       </li>
                       <li>
-                        <a href="elements-buttons.html">Buttons</a>
+                        <a href="elements-rollovers.html">Rollovers</a>
                       </li>
                       <li>
-                        <a href="elements-icons.html">Icons</a>
-                      </li>
-                      <li>
-                        <a href="elements-modals.html">Modals</a>
-                      </li>
-                      <li>
-                        <a href="elements-tabs.html">Tabs</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="elements-slider.html">Sliders</a>
-                    <ul>
-                      <li>
-                        <a href="elements-slider.html">Full Width Slider</a>
-                      </li>
-                      <li>
-                        <a href="elements-carousel-slider.html">Carousel Slider</a>
-                      </li>
-                      <li>
-                        <a href="elements-logo-slider.html">Logo Slider</a>
-                      </li>
-                      <li>
-                        <a href="elements-team-slider.html">Team Slider</a>
-                      </li>
-                      <li>
-                        <a href="elements-testimonial-slider.html">Testimonial Slider</a>
-                      </li>
-                      <li>
-                        <a href="elements-hero-slider.html">Hero Slider</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="elements-testimonials.html">Other Elements</a>
-                    <ul>
-                      <li>
-                        <a href="elements-testimonials.html">Testimonials</a>
-                      </li>
-                      <li>
-                        <a href="elements-boxes.html">Boxes</a>
-                      </li>
-                      <li>
-                        <a href="elements-color-swatches.html">Color Swatches</a>
-                      </li>
-                      <li>
-                        <a href="elements-feature-columns.html">Feature Columns</a>
-                      </li>
-                      <li>
-                        <a href="elements-progress-bars.html">Progress Bars</a>
-                      </li>
-                      <li>
-                        <a href="elements-pricing-tables.html">Pricing Tables</a>
-                      </li>
-                      <li>
-                        <a href="elements-typography.html">Typography</a>
+                        <a href="elements-video.html">Video</a>
                       </li>
                     </ul>
                   </li>
                 </ul>
               </li>
+
+              <nuxt-link tag="li" to="/subscribed" active-class="current" exact>
+                <a>Subscribed</a>
+              </nuxt-link>
             </ul>
           </nav>
         </div>

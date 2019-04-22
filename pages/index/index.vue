@@ -3,7 +3,7 @@
 
     <div class="section-block pt-0">
       <div class="full-width" style="background-color: black">
-        <el-carousel trigger="click" height="500px">
+        <el-carousel trigger="click" height="80vh">
           <el-carousel-item v-for="item in 4" :key="item">
             <div class="slider-item-container">
               <div class="slider-item-inner">
