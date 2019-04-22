@@ -10,32 +10,55 @@
             Manga name
           </h1>
           <h3 class="weight-semi-bold">
-            Genre: a test
+            Genre: test
           </h3>
-          <p>
+          <el-rate
+            v-model="value"
+            disabled
+            show-score
+            text-color="#ff9900"
+            score-template="{value} points">
+          </el-rate>
+          <p class="mt-20">
             Description: a very long texta very long texta very long texta very long texta very long texta very long text
           </p>
+          <el-button type="success">Subscribe</el-button>
+          <div class="block mt-20">
+            <span class="demonstration">Rate this manga</span>
+            <el-rate v-model="value1"></el-rate>
+          </div>
         </div>
       </div>
 
       <div class="row mt-40">
         <div class="column-width-12">
-          <el-table :data="tableData" style="width: 100%">
-           <el-table-column
-             prop="date"
-             label="Date"
-             width="180">
-           </el-table-column>
-           <el-table-column
-             prop="name"
-             label="Name"
-             width="180">
-           </el-table-column>
-           <el-table-column
-             prop="address"
-             label="Address">
-           </el-table-column>
-         </el-table>
+          <el-table
+            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            style="width: 100%">
+            <el-table-column
+              label="Date"
+              prop="date">
+            </el-table-column>
+            <el-table-column
+              label="Name"
+              prop="name">
+            </el-table-column>
+            <el-table-column
+              align="right">
+              <template slot="header" slot-scope="scope">
+                <el-input
+                  v-model="search"
+                  size="mini"
+                  placeholder="Type to search"/>
+              </template>
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  @click="handleEdit(scope.$index, scope.row)">Read</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
     </div>
@@ -46,25 +69,35 @@
 export default {
   data() {
     return {
+      value: 3.7,
+      value1: null,
       tableData: [{
         date: '2016-05-03',
         name: 'Tom',
         address: 'No. 189, Grove St, Los Angeles'
       }, {
         date: '2016-05-02',
-        name: 'Tom',
+        name: 'John',
         address: 'No. 189, Grove St, Los Angeles'
       }, {
         date: '2016-05-04',
-        name: 'Tom',
+        name: 'Morgan',
         address: 'No. 189, Grove St, Los Angeles'
       }, {
         date: '2016-05-01',
-        name: 'Tom',
+        name: 'Jessy',
         address: 'No. 189, Grove St, Los Angeles'
-      }]
+      }],
+      search: '',
     }
-  }
+  },
+
+  methods: {
+    handleEdit(index, row) {
+      this.$router.push('/123/123');
+      // console.log(index, row);
+    }
+  },
 }
 </script>
 

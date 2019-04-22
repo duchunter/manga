@@ -34,7 +34,9 @@
                       </div>
                     </div>
                     <div class="column width-12">
-                      <input type="submit" value="Sign In" class="form-submit button rounded medium bkg-green bkg-hover-theme bkg-focus-green color-white color-hover-white mb-0">
+                      <nuxt-link to="/admin" class="button rounded medium bkg-green bkg-hover-theme bkg-focus-green color-white color-hover-white mb-0">
+                        Sign in
+                      </nuxt-link>
                     </div>
                   </div>
                 </form>
