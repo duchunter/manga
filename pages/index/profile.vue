@@ -13,11 +13,14 @@
 
         <div class="column width-8">
           <div class="box rounded shadow center">
-            <el-form :model="form" ref="form" label-width="120px">
-              <el-form-item label="Password" prop="pass">
+            <el-form :model="form" ref="form">
+              <el-form-item label="Current password" prop="pass">
                 <el-input type="password" v-model="form.pass" autocomplete="off"></el-input>
               </el-form-item>
-              <el-form-item label="Confirm" prop="checkPass">
+              <el-form-item label="New password" prop="checkPass">
+                <el-input type="password" v-model="form.checkPass" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="Confirm new password" prop="checkPass">
                 <el-input type="password" v-model="form.checkPass" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item>
