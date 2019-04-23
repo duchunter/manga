@@ -42,7 +42,7 @@
                 data-hover-bkg-opacity="0.9"
               >
                 <nuxt-link class="overlay-link" to="/123">
-                  <img src="/img/test-small.jpg"/>
+                  <img src="/img/portrait.jpg"/>
                   <span class="overlay-info">
                     <span>
                       <span>
@@ -98,7 +98,7 @@ export default {
   .slider-item-container {
     height: 100%;
     width: 100%;
-    background-image: url('/img/bg.jpg');
+    background-image: url('/img/bg1.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

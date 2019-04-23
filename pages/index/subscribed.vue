@@ -20,7 +20,7 @@
                 data-hover-bkg-opacity="0.9"
               >
                 <nuxt-link class="overlay-link" to="/123">
-                  <img src="/img/test-small.jpg"/>
+                  <img src="/img/portrait.jpg"/>
                   <span class="overlay-info">
                     <span>
                       <span>

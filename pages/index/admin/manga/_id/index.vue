@@ -3,36 +3,29 @@
     <div class="section-block bkg-white">
       <div class="row">
         <div class="column width-12">
+          <h2 class="weight-semi-bold mb-40">Manga info</h2>
           <el-form ref="form" :model="form" label-width="120px">
-            <el-form-item label="Activity name">
+            <el-form-item label="Cover">
+              <el-upload>
+                <el-button size="small" type="primary">Upload</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="Name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="Instant delivery">
-              <el-switch v-model="form.delivery"></el-switch>
+            <el-form-item label="Author">
+              <el-input v-model="form.author"></el-input>
             </el-form-item>
-            <el-form-item label="Activity type">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox label="Online activities" name="type"></el-checkbox>
-                <el-checkbox label="Promotion activities" name="type"></el-checkbox>
-                <el-checkbox label="Offline activities" name="type"></el-checkbox>
-                <el-checkbox label="Simple brand exposure" name="type"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="Resources">
-              <el-radio-group v-model="form.resource">
-                <el-radio label="Sponsor"></el-radio>
-                <el-radio label="Venue"></el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="Activity form">
-              <el-input type="textarea" v-model="form.desc"></el-input>
+            <el-form-item label="Description">
+              <el-input :rows="3" type="textarea" v-model="form.description"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">Create</el-button>
-              <el-button>Cancel</el-button>
+              <el-button type="primary" @click="onSubmit">Edit</el-button>
+              <el-button type="danger">Delete</el-button>
             </el-form-item>
           </el-form>
 
+          <h2 class="weight-semi-bold mt-80">Chapters list</h2>
           <el-table
             :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%">
@@ -93,10 +86,9 @@ export default {
       search: '',
       form: {
         name: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        author: '',
+        description: '',
+        imgURL: ''
       }
     }
   },
