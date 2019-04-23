@@ -6,7 +6,7 @@
         <div class="column width-12 nav-bar-inner">
           <div class="logo">
             <div class="logo-inner">
-              <nuxt-link tag="a" to="/"><img src="/img/logo/logo-ph.png" alt="Faulkner Logo" /></nuxt-link>
+              <nuxt-link tag="a" to="/"><img src="/img/logo/logo-blue.png" alt="Faulkner Logo" /></nuxt-link>
               <a href="/"><img src="/img/logo/logo.png" alt="Faulkner Logo" /></a>
             </div>
           </div>
