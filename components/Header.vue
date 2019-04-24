@@ -16,7 +16,9 @@
                 <!-- Dropdown Login -->
                 <div class="v-align-middle">
                   <div class="dropdown">
-                    <a href="#" class="button small rounded no-page-fade no-margin-bottom"><span class="icon-lock left"></span>Sign In</a>
+                    <a href="#" class="button small rounded no-page-fade no-margin-bottom hide-on-mobile">
+                      <span class="icon-lock left"></span>Sign In
+                    </a>
                     <div class="dropdown-list custom-content">
                       <h5>Access Your Account</h5>
                       <div class="login-form-container">
@@ -52,13 +54,13 @@
                   </div>
                 </div>
               </li>
-              
+
               <li>
                 <!-- Button -->
                 <div class="v-align-middle">
                   <nuxt-link
                     to="/signin"
-                    class="buy-template button small rounded no-label-on-mobile no-margin-bottom fade-location">
+                    class="buy-template button small rounded hide-on-mobile no-label-on-mobile no-margin-bottom fade-location">
                     Sign in
                   </nuxt-link>
                 </div>

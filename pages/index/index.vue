@@ -4,7 +4,7 @@
     <div class="section-block pt-0">
       <div class="full-width" style="background-color: black">
         <el-carousel trigger="click" height="80vh">
-          <el-carousel-item v-for="item in 2" :key="item">
+          <el-carousel-item v-for="item in 4" :key="item">
             <div class="slider-item-container" :style="`background-image: url('/img/bg${item}.jpg');`">
               <!--<div class="slider-item-inner">-->
                 <!--<h1 class="weight-semi-bold color-white">-->
