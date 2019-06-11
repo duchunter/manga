@@ -1,74 +1,77 @@
 <template>
   <!-- Header -->
-  <header class="header header-relative header-fixed-on-mobile nav-dark" data-bkg-threshold="100" data-sticky-threshold="0">
+  <header
+    class="header header-relative header-fixed-on-mobile nav-dark"
+    data-bkg-threshold="100"
+    data-sticky-threshold="0"
+  >
     <div class="header-inner">
       <div class="row nav-bar">
         <div class="column width-12 nav-bar-inner">
           <div class="logo">
             <div class="logo-inner">
-              <nuxt-link tag="a" to="/"><img src="/img/logo/logo-grey.png" style="height: 9rem"/></nuxt-link>
-              <a href="/"><img src="/img/logo/logo.png" /></a>
+              <nuxt-link
+                tag="a"
+                to="/"
+              >
+                <img
+                  src="/img/logo/logo-grey.png"
+                  style="height: 9rem; transform: translateY(-1rem)"
+                >
+              </nuxt-link>
+              <nuxt-link
+                tag="a"
+                to="/"
+              >
+                <img src="/img/logo/logo.png">
+              </nuxt-link>
             </div>
           </div>
           <nav class="navigation nav-block secondary-navigation nav-right">
             <ul>
               <li>
-                <!-- Dropdown Login -->
-                <div class="v-align-middle">
-                  <div class="dropdown">
-                    <a href="#" class="button small rounded no-page-fade no-margin-bottom hide-on-mobile">
-                      <span class="icon-lock left"></span>Sign In
-                    </a>
-                    <div class="dropdown-list custom-content">
-                      <h5>Access Your Account</h5>
-                      <div class="login-form-container">
-                        <form class="login-form" action="#" method="post" novalidate>
-                          <div class="row">
-                            <div class="column width-12">
-                              <div class="field-wrapper">
-                                <input type="text" name="login[email]" class="form-name form-element rounded small" placeholder="E-mail" tabindex="1" required>
-                              </div>
-                            </div>
-                            <div class="column width-12">
-                              <div class="field-wrapper">
-                                <input type="password" name="login[password]" class="form-email form-element rounded small" placeholder="Password" tabindex="2" required>
-                              </div>
-                            </div>
-                            <div class="column width-12">
-                              <div class="row flex">
-                                <div class="column width-6">
-                                  <input type="submit" value="Sign In" class="form-submit button small rounded bkg-theme bkg-hover-theme color-white color-hover-white">
-                                </div>
-                                <div class="column width-6 v-align-middle right">
-                                  <div>
-                                    <a class="recuperate-password" href="">Password?</a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                        <div class="form-response"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-
-              <li>
                 <!-- Button -->
                 <div class="v-align-middle">
                   <nuxt-link
+                    v-if="!isLoggedIn"
                     to="/signin"
-                    class="buy-template button small rounded hide-on-mobile no-label-on-mobile no-margin-bottom fade-location">
+                    class="button small rounded hide-on-mobile no-label-on-mobile no-margin-bottom fade-location"
+                  >
                     Sign in
                   </nuxt-link>
                 </div>
               </li>
+              <li>
+                <!-- Button -->
+                <div class="v-align-middle">
+                  <nuxt-link
+                    v-if="!isLoggedIn"
+                    to="/register"
+                    class="button small rounded hide-on-mobile no-label-on-mobile no-margin-bottom fade-location"
+                  >
+                    Sign up
+                  </nuxt-link>
+                </div>
+              </li>
+              <li>
+                <!-- Button -->
+                <div class="v-align-middle">
+                  <a
+                    v-if="isLoggedIn"
+                    class="button small rounded hide-on-mobile no-label-on-mobile no-margin-bottom fade-location"
+                    @click="signOut"
+                  >
+                    Sign out
+                  </a>
+                </div>
+              </li>
               <li class="aux-navigation hide">
                 <!-- Aux Navigation -->
-                <a href="#" class="navigation-show side-nav-show nav-icon">
-                  <span class="icon-menu"></span>
+                <a
+                  href="#"
+                  class="navigation-show side-nav-show nav-icon"
+                >
+                  <span class="icon-menu" />
                 </a>
               </li>
             </ul>
@@ -76,10 +79,18 @@
           <nav class="navigation nav-block primary-navigation nav-left sub-menu-indicator">
             <ul>
               <li>
-                <el-input placeholder="Search" v-model="search"></el-input>
+                <el-input
+                  v-model="search"
+                  placeholder="Search"
+                />
               </li>
 
-              <nuxt-link tag="li" to="/" active-class="current" exact>
+              <nuxt-link
+                tag="li"
+                to="/"
+                active-class="current"
+                exact
+              >
                 <a>Popular</a>
               </nuxt-link>
 
@@ -87,7 +98,6 @@
                 <a>Genre</a>
                 <ul class="mega-sub-menu">
                   <li>
-                    <a href="elements-column-structure.html">Grid Structure</a>
                     <ul>
                       <li>
                         <a href="elements-column-structure.html">Column Structure</a>
@@ -101,7 +111,6 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="elements-lightbox.html">Media</a>
                     <ul>
                       <li>
                         <a href="elements-lightbox.html">Lightbox</a>
@@ -118,7 +127,6 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="elements-lightbox.html">Media</a>
                     <ul>
                       <li>
                         <a href="elements-lightbox.html">Lightbox</a>
@@ -137,7 +145,13 @@
                 </ul>
               </li>
 
-              <nuxt-link tag="li" to="/subscribed" active-class="current" exact>
+              <nuxt-link
+                v-if="isLoggedIn"
+                tag="li"
+                to="/subscribed"
+                active-class="current"
+                exact
+              >
                 <a>Subscribed</a>
               </nuxt-link>
             </ul>
@@ -154,6 +168,26 @@ export default {
   data() {
     return {
       search: ''
+    }
+  },
+
+  computed: {
+    isLoggedIn() { return this.$store.state.isLoggedIn },
+    isAdmin() { return this.$store.state.isAdmin }
+  },
+
+  mounted() {
+    if (process.client) {
+      const token = window.localStorage.getItem('token');
+      if (token) {
+        this.$store.commit('SET_TOKEN', token);
+        this.$store.commit('SET_LOGGED_IN', true);
+        this.$store.commit('SET_ADMIN', true);
+      } else {
+        this.$store.commit('SET_TOKEN', '');
+        this.$store.commit('SET_LOGGED_IN', false);
+        this.$store.commit('SET_ADMIN', false);
+      }
     }
   }
 }
