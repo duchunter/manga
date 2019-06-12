@@ -150,6 +150,35 @@ Vue.mixin({
       }
     },
 
+    async subscribeManga(id) {
+      try {
+        const token = this.$store.state.token;
+        if (!token) {
+          this.$router.push('/signin');
+          return;
+        }
+        const payload = { subcribed: true };
+        const res = await this.$axios.put(`/mangas/${id}/subscription`, payload, getHeader(token));
+        this.$message.success('Done');
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+      }
+    },
+
+    async rateManga(id, rating) {
+      try {
+        const token = this.$store.state.token;
+        if (!token) {
+          this.$router.push('/signin');
+          return;
+        }
+        const res = await this.$axios.put(`/mangas/${id}/rating`, { rating }, getHeader(token));
+        this.$message.success('Done');
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+      }
+    },
+
     // Free flow
     async getAllGenres() {
       try {

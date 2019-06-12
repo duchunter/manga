@@ -1,12 +1,12 @@
 <template>
   <div class="shop">
-  	<DrawerNav />
+    <DrawerNav />
 
     <div class="wrapper reveal-side-navigation">
-  		<div class="wrapper-inner">
+      <div class="wrapper-inner">
         <Header />
 
-        <nuxt-child></nuxt-child>
+        <nuxt-child />
       </div>
     </div>
   </div>

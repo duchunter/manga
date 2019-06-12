@@ -81,11 +81,11 @@
               <li>
                 <div class="field-wrapper">
                   <input
+                    v-model="search"
                     type="text"
                     class="form-name form-element rounded medium"
                     style="height: 40px; margin-bottom: 0"
                     placeholder="Search"
-                    v-model="search"
                     @keyup.enter="searchByName"
                   >
                 </div>

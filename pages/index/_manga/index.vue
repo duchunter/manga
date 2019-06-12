@@ -1,9 +1,15 @@
 <template lang="html">
   <div class="content clearfix">
-    <div class="section-block bkg-white">
-      <div class="row">
+    <div class="section-block bkg-white pt-40">
+      <div
+        v-loading="isInfoLoading"
+        class="row"
+      >
         <div class="column width-4">
-          <img src="/img/cover1.jpg" alt="">
+          <img
+            src="/img/cover1.jpg"
+            alt=""
+          >
         </div>
         <div class="column width-8">
           <h1 class="weight-semi-bold">
@@ -17,45 +23,65 @@
             disabled
             show-score
             text-color="#ff9900"
-            score-template="{value} points">
-          </el-rate>
+            score-template="{value} points"
+          />
           <p class="mt-20">
             Description: a very long texta very long texta very long texta very long texta very long texta very long text
           </p>
-          <el-button type="success">Subscribe</el-button>
+          <el-button
+            type="success"
+            @click="subscribe"
+          >
+            Subscribe
+          </el-button>
           <div class="block mt-20">
             <span class="demonstration">Rate this manga</span>
-            <el-rate v-model="value1"></el-rate>
+            <el-rate
+              v-model="value"
+              @change="rate"
+            />
           </div>
         </div>
       </div>
 
-      <div class="row mt-40">
+      <div
+        v-loading="isChaptersLoading"
+        class="row mt-40"
+      >
         <div class="column-width-12">
           <el-table
             :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-            style="width: 100%">
+            style="width: 100%"
+          >
             <el-table-column
               label="Date"
-              prop="date">
-            </el-table-column>
+              prop="date"
+            />
             <el-table-column
               label="Name"
-              prop="name">
-            </el-table-column>
+              prop="name"
+            />
             <el-table-column
-              align="right">
-              <template slot="header" slot-scope="scope">
+              align="right"
+            >
+              <template
+                slot="header"
+                slot-scope="scope"
+              >
                 <el-input
                   v-model="search"
                   size="mini"
-                  placeholder="Type to search"/>
+                  placeholder="Type to search"
+                />
               </template>
               <template slot-scope="scope">
                 <el-button
                   size="mini"
                   type="primary"
-                  @click="handleEdit(scope.$index, scope.row)">Read</el-button>
+                  @click="handleRead(scope.$index, scope.row)"
+                >
+                  Read
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -70,7 +96,6 @@ export default {
   data() {
     return {
       value: 3.7,
-      value1: null,
       tableData: [{
         date: '2016-05-03',
         name: 'Tom',
@@ -88,14 +113,43 @@ export default {
         name: 'Jessy',
         address: 'No. 189, Grove St, Los Angeles'
       }],
+      isInfoLoading: false,
+      isChaptersLoading: false,
       search: '',
+      mangaInfo: {},
+      chapters: []
     }
   },
 
+  mounted() {
+    this.isInfoLoading = true;
+    this.isChaptersLoading = true;
+    const id = this.$route.params.manga;
+
+    // Get info
+    this.getManga(id).then(data => {
+      this.mangaInfo = data;
+      this.isInfoLoading = false;
+    });
+
+    // Get chapters list
+    this.getMangaChapters(id).then(data => {
+      this.chapters = data;
+      this.isChaptersLoading = false;
+    });
+  },
+
   methods: {
-    handleEdit(index, row) {
+    subscribe() {
+      const id = this.$route.params.manga;
+      this.subscribeManga(id);
+    },
+    rate(value) {
+      const id = this.$route.params.manga;
+      this.rateManga(id, value);
+    },
+    handleRead(index, row) {
       this.$router.push('/123/123');
-      // console.log(index, row);
     }
   },
 }

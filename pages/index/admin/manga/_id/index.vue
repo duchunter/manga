@@ -3,8 +3,15 @@
     <div class="section-block bkg-white">
       <div class="row">
         <div class="column width-12">
-          <h2 class="weight-semi-bold mb-40">Manga info</h2>
-          <el-form ref="form" :model="form" label-width="120px" v-loading="isInfoLoading">
+          <h2 class="weight-semi-bold mb-40">
+            Manga info
+          </h2>
+          <el-form
+            ref="form"
+            v-loading="isInfoLoading"
+            :model="form"
+            label-width="120px"
+          >
             <el-form-item label="Cover">
               <el-upload
                 action="https://vgy.me/upload"
@@ -13,25 +20,43 @@
                 :file-list="fileList"
                 :on-change="handleFileChange"
               >
-                <el-button size="small" type="primary">Upload</el-button>
+                <el-button
+                  size="small"
+                  type="primary"
+                >
+                  Upload
+                </el-button>
               </el-upload>
             </el-form-item>
             <el-form-item label="Name">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.name" />
             </el-form-item>
             <el-form-item label="Author">
-              <el-input v-model="form.author"></el-input>
+              <el-input v-model="form.author" />
             </el-form-item>
             <el-form-item label="Description">
-              <el-input :rows="3" type="textarea" v-model="form.description"></el-input>
+              <el-input
+                v-model="form.description"
+                :rows="3"
+                type="textarea"
+              />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitChange">Edit</el-button>
-              <el-button type="danger">Delete</el-button>
+              <el-button
+                type="primary"
+                @click="submitChange"
+              >
+                Edit
+              </el-button>
+              <el-button type="danger">
+                Delete
+              </el-button>
             </el-form-item>
           </el-form>
 
-          <h2 class="weight-semi-bold mt-80">Chapters list</h2>
+          <h2 class="weight-semi-bold mt-80">
+            Chapters list
+          </h2>
           <el-table
             v-loading="isChaptersLoading"
             :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
@@ -39,28 +64,39 @@
           >
             <el-table-column
               label="Date"
-              prop="date">
-            </el-table-column>
+              prop="date"
+            />
             <el-table-column
               label="Name"
-              prop="name">
-            </el-table-column>
+              prop="name"
+            />
             <el-table-column
-              align="right">
-              <template slot="header" slot-scope="scope">
+              align="right"
+            >
+              <template
+                slot="header"
+                slot-scope="scope"
+              >
                 <el-input
                   v-model="search"
                   size="mini"
-                  placeholder="Type to search"/>
+                  placeholder="Type to search"
+                />
               </template>
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                  @click="handleEdit(scope.$index, scope.row)"
+                >
+                  Edit
+                </el-button>
                 <el-button
                   size="mini"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                  @click="handleDelete(scope.$index, scope.row)"
+                >
+                  Delete
+                </el-button>
               </template>
             </el-table-column>
           </el-table>

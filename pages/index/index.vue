@@ -1,15 +1,26 @@
 <template>
   <div class="content clearfix">
-
     <div class="section-block pt-0">
-      <div class="full-width" style="background-color: black">
-        <el-carousel trigger="click" height="80vh">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <div class="slider-item-container" :style="`background-image: url('/img/bg${item}.jpg');`">
+      <div
+        class="full-width"
+        style="background-color: black"
+      >
+        <el-carousel
+          trigger="click"
+          height="80vh"
+        >
+          <el-carousel-item
+            v-for="item in 4"
+            :key="item"
+          >
+            <div
+              class="slider-item-container"
+              :style="`background-image: url('/img/bg${item}.jpg');`"
+            >
               <!--<div class="slider-item-inner">-->
-                <!--<h1 class="weight-semi-bold color-white">-->
-                  <!--Manga name-->
-                <!--</h1>-->
+              <!--<h1 class="weight-semi-bold color-white">-->
+              <!--Manga name-->
+              <!--</h1>-->
               <!--</div>-->
             </div>
           </el-carousel-item>
@@ -22,18 +33,26 @@
     <!-- Fullscreen Slider Section End -->
 
     <!-- Tabs Button Nav -->
-    <div class="section-block bkg-white">
+    <div class="section-block bkg-white pt-0">
       <div class="row">
         <div class="column width-8">
-          <h2 class="mb-0">Top Trending Manga</h2>
-          <h2 class="weight-semi-bold mb-50">January 2018</h2>
+          <h2 class="weight-semi-bold mb-50">
+            Newest
+          </h2>
         </div>
       </div>
 
       <div class="row">
-        <div class="column width-8">
+        <div
+          v-loading="isLoading"
+          class="column width-8"
+        >
           <div class="row flex grid content-grid-2">
-            <div v-for="index in 9" :key="index" class="grid-item">
+            <div
+              v-for="index in 9"
+              :key="index"
+              class="grid-item center"
+            >
               <div
                 class="thumbnail rounded img-scale-in"
                 data-hover-easing="easeInOut"
@@ -41,8 +60,14 @@
                 data-hover-bkg-color="#ffffff"
                 data-hover-bkg-opacity="0.9"
               >
-                <nuxt-link class="overlay-link" to="/123">
-                  <img :src="`/img/cover${index % 3 + 1}.jpg`"/>
+                <nuxt-link
+                  class="overlay-link"
+                  to="/123"
+                >
+                  <img
+                    :src="`/img/cover${index % 3 + 1}.jpg`"
+                    style="max-height: 500px"
+                  >
                   <span class="overlay-info">
                     <span>
                       <span>
@@ -51,7 +76,10 @@
                     </span>
                   </span>
                 </nuxt-link>
-                <p class="mb-0" style="visibility: hidden">
+                <p
+                  class="mb-0"
+                  style="visibility: hidden"
+                >
                   dummy
                 </p>
                 <h3 class="weight-semi-bold center mb-10">
@@ -72,7 +100,11 @@
             </h3>
 
             <div class="row flex grid content-grid-2">
-              <div v-for="index in 20" :key="index" class="grid-item">
+              <div
+                v-for="index in 10"
+                :key="index"
+                class="grid-item"
+              >
                 <h4>
                   Genre
                 </h4>
@@ -83,14 +115,30 @@
       </div>
     </div>
     <!-- Tabs Button Nav End -->
-
   </div>
 </template>
 
 <script>
 
 export default {
+  data() {
+    return {
+      isLoading: false,
+      mangaList: []
+    }
+  },
 
+  computed: {
+    genres() { return this.$store.state.genres }
+  },
+
+  mounted() {
+    this.isLoading = true;
+    this.getMangas({ page: 1 }).then(data => {
+      this.mangaList = data;
+      this.isLoading = false;
+    });
+  }
 }
 </script>
 
