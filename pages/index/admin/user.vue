@@ -4,15 +4,16 @@
       <div class="row">
         <div class="column width-12">
           <el-table
+            v-loading="isLoading"
             :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%">
             <el-table-column
-              label="Date"
-              prop="date">
-            </el-table-column>
-            <el-table-column
               label="Name"
               prop="name">
+            </el-table-column>
+            <el-table-column
+              label="Admin"
+              prop="isAdmin">
             </el-table-column>
             <el-table-column
               align="right">
@@ -25,7 +26,10 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">Become admin</el-button>
+                  @click="handleEdit(scope.$index, scope.row)"
+                >
+                  {{ scope.row.isAdmin ? 'Demote' : 'Become admin'}}
+                </el-button>
                 <el-button
                   size="mini"
                   type="danger"
@@ -42,35 +46,45 @@
 <script>
 export default {
   data() {
-      return {
-        tableData: [{
-          date: '2016-05-03',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          date: '2016-05-02',
-          name: 'John',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          date: '2016-05-04',
-          name: 'Morgan',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          date: '2016-05-01',
-          name: 'Jessy',
-          address: 'No. 189, Grove St, Los Angeles'
-        }],
-        search: '',
-      }
+    return {
+      isLoading: false,
+      users: [],
+      tableData: [{
+        id: 1,
+        name: 'Tom',
+        isAdmin: 'x'
+      }, {
+        id: 2,
+        name: 'John',
+      }],
+      search: '',
+    }
+  },
+  mounted() {
+    this.isLoading = true;
+    this.getUsers().then(data => {
+      this.isLoading = false;
+      this.users = data;
+    })
+  },
+  methods: {
+    handleEdit(index, row) {
+      const { id, isAdmin } = row;
+      this.updateUser(id, { isAdmin: !isAdmin }).then(isSuccess => {
+        if (isSuccess) {
+          this.users[index].isAdmin = !isAdmin;
+        }
+      });
     },
-    methods: {
-      handleEdit(index, row) {
-        // console.log(index, row);
-      },
-      handleDelete(index, row) {
-        // console.log(index, row);
-      }
-    },
+    handleDelete(index, row) {
+      const { id } = row;
+      this.deleteUser(id).then(isSuccess => {
+        if (isSuccess) {
+          this.users.splice(index, 1);
+        }
+      });
+    }
+  },
 }
 </script>
 

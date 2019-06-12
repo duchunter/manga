@@ -3,7 +3,7 @@
     <div class="section-block bkg-white pt-40">
       <div class="row">
         <div class="column width-12">
-          <h2 class="weight-semi-bold mb-50">Subscribed</h2>
+          <h2 class="weight-semi-bold mb-50">Search results</h2>
         </div>
       </div>
 
@@ -19,7 +19,7 @@
                 data-hover-bkg-opacity="0.9"
               >
                 <nuxt-link class="overlay-link" to="/123">
-                  <img :src="`/img/cover${index % 3 + 1}.jpg`" style="max-height: 350px;"/>
+                  <img :src="`/img/cover${index % 3 + 1}.jpg`" style="max-height: 350px"/>
                   <span class="overlay-info">
                     <span>
                       <span>
@@ -47,22 +47,23 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      isLoading: false,
-      mangas: []
-    }
-  },
+  export default {
+    data() {
+      return {
+        isLoading: false,
+        results: []
+      }
+    },
 
-  mounted() {
-    this.isLoading = true;
-    this.getSubscribedMangas().then(data => {
-      this.mangas = data;
-      this.isLoading = false;
-    })
+    mounted() {
+      const { name, genre } = this.$route.query;
+      this.isLoading = true;
+      this.getMangas({ name, genre }).then(data => {
+        this.isLoading = false;
+        this.results = data;
+      })
+    }
   }
-}
 </script>
 
 <style lang="css" scoped>

@@ -79,10 +79,16 @@
           <nav class="navigation nav-block primary-navigation nav-left sub-menu-indicator">
             <ul>
               <li>
-                <el-input
-                  v-model="search"
-                  placeholder="Search"
-                />
+                <div class="field-wrapper">
+                  <input
+                    type="text"
+                    class="form-name form-element rounded medium"
+                    style="height: 40px; margin-bottom: 0"
+                    placeholder="Search"
+                    v-model="search"
+                    @keyup.enter="searchByName"
+                  >
+                </div>
               </li>
 
               <nuxt-link
@@ -97,49 +103,21 @@
               <li class="contains-mega-sub-menu">
                 <a>Genre</a>
                 <ul class="mega-sub-menu">
-                  <li>
+                  <li
+                    v-for="(list, index) in dividedGenre"
+                    :key="index"
+                  >
                     <ul>
-                      <li>
-                        <a href="elements-column-structure.html">Column Structure</a>
-                      </li>
-                      <li>
-                        <a href="elements-animation.html">Column &amp; Element Animation</a>
-                      </li>
-                      <li>
-                        <a href="elements-sticky-columns.html">Sticky Columns</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <ul>
-                      <li>
-                        <a href="elements-lightbox.html">Lightbox</a>
-                      </li>
-                      <li>
-                        <a href="elements-maps.html">Maps</a>
-                      </li>
-                      <li>
-                        <a href="elements-rollovers.html">Rollovers</a>
-                      </li>
-                      <li>
-                        <a href="elements-video.html">Video</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <ul>
-                      <li>
-                        <a href="elements-lightbox.html">Lightbox</a>
-                      </li>
-                      <li>
-                        <a href="elements-maps.html">Maps</a>
-                      </li>
-                      <li>
-                        <a href="elements-rollovers.html">Rollovers</a>
-                      </li>
-                      <li>
-                        <a href="elements-video.html">Video</a>
-                      </li>
+                      <nuxt-link
+                        v-for="item in list"
+                        :key="item"
+                        tag="li"
+                        :to="`/search?genre=${item}`"
+                        active-class="current"
+                        exact
+                      >
+                        <a>{{ item }}</a>
+                      </nuxt-link>
                     </ul>
                   </li>
                 </ul>
@@ -154,6 +132,26 @@
               >
                 <a>Subscribed</a>
               </nuxt-link>
+
+              <nuxt-link
+                v-if="isLoggedIn && isAdmin"
+                tag="li"
+                to="/admin"
+                active-class="current"
+                exact
+              >
+                <a>Admin</a>
+              </nuxt-link>
+
+              <nuxt-link
+                v-if="isLoggedIn"
+                tag="li"
+                to="/account"
+                active-class="current"
+                exact
+              >
+                <a>Account</a>
+              </nuxt-link>
             </ul>
           </nav>
         </div>
@@ -167,16 +165,26 @@
 export default {
   data() {
     return {
-      search: ''
+      search: '',
+      genres: ['Hentai', 'Action', 'Ecchi', 'Drama']
     }
   },
 
   computed: {
     isLoggedIn() { return this.$store.state.isLoggedIn },
-    isAdmin() { return this.$store.state.isAdmin }
+    isAdmin() { return this.$store.state.isAdmin },
+    // genres() { return this.$store.state.genres },
+    dividedGenre() {
+      const list = [...this.genres];
+      const length = list.length / 3;
+      const list1 = list.splice(0, length);
+      const list2 = list.splice(0, length);
+      return [ list1, list2, list ];
+    }
   },
 
   mounted() {
+    this.getAllGenres();
     if (process.client) {
       const token = window.localStorage.getItem('token');
       if (token) {
@@ -188,6 +196,12 @@ export default {
         this.$store.commit('SET_LOGGED_IN', false);
         this.$store.commit('SET_ADMIN', false);
       }
+    }
+  },
+
+  methods: {
+    searchByName() {
+      this.$router.push(`/search?name=${this.search}`);
     }
   }
 }

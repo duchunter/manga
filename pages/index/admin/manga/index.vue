@@ -5,10 +5,16 @@
         <div class="column width-12">
           <h2 class="weight-semi-bold">Add new manga</h2>
           <el-collapse>
-            <el-collapse-item title="New manga" name="1">
+            <el-collapse-item title="Info" name="1">
               <el-form ref="form" :model="form" label-width="120px">
                 <el-form-item label="Cover">
-                  <el-upload>
+                  <el-upload
+                    action="https://vgy.me/upload"
+                    :multiple="false"
+                    :limit="1"
+                    :file-list="fileList"
+                    :on-change="handleFileChange"
+                  >
                     <el-button size="small" type="primary">Upload</el-button>
                   </el-upload>
                 </el-form-item>
@@ -22,7 +28,7 @@
                   <el-input :rows="3" type="textarea" v-model="form.description"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">Create</el-button>
+                  <el-button type="primary" @click="submitManga">Create</el-button>
                   <el-button>Cancel</el-button>
                 </el-form-item>
               </el-form>
@@ -31,6 +37,7 @@
 
           <h2 class="weight-semi-bold mt-80">Manga list</h2>
           <el-table
+            v-loading="isLoading"
             :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%">
             <el-table-column
@@ -69,41 +76,63 @@
 <script>
 export default {
   data() {
-      return {
-        tableData: [{
-          date: '2016-05-03',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          date: '2016-05-02',
-          name: 'John',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          date: '2016-05-04',
-          name: 'Morgan',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          date: '2016-05-01',
-          name: 'Jessy',
-          address: 'No. 189, Grove St, Los Angeles'
-        }],
-        search: '',
-        form: {
-          name: '',
-          author: '',
-          description: ''
+    return {
+      tableData: [{
+        date: '2016-05-03',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-02',
+        name: 'John',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-04',
+        name: 'Morgan',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-01',
+        name: 'Jessy',
+        address: 'No. 189, Grove St, Los Angeles'
+      }],
+      isLoading: false,
+      search: '',
+      fileList: [],
+      mangaList: [],
+      form: {
+        cover: '',
+        name: '',
+        author: '',
+        description: ''
+      }
+    }
+  },
+  mounted() {
+    this.isLoading = true;
+    this.getMangas({ page: 1 }).then(data => {
+      this.mangaList = data;
+      this.isLoading = false;
+    });
+  },
+  methods: {
+    handleFileChange(file) {
+      if (file.response) {
+        this.form.cover = file.response.image;
+      }
+    },
+    submitManga() {
+      this.addManga(this.form);
+    },
+    handleEdit(index, row) {
+      this.$router.push('/admin/manga/123');
+    },
+    handleDelete(index, row) {
+      this.deleteManga(row.id).then(isSuccess => {
+        if (isSuccess) {
+          this.mangaList.splice(index, 1);
         }
-      }
-    },
-    methods: {
-      handleEdit(index, row) {
-        this.$router.push('/admin/manga/123');
-        // console.log(index, row);
-      },
-      handleDelete(index, row) {
-        // console.log(index, row);
-      }
-    },
+      });
+    }
+  },
 }
 </script>
 

@@ -1,7 +1,8 @@
 export const state = () => ({
   isLoggedIn: false,
   isAdmin: false,
-  token: ''
+  token: '',
+  genres: []
 })
 
 export const mutations = {
@@ -13,5 +14,8 @@ export const mutations = {
   },
   SET_TOKEN(state, token) {
     state.token = token
-  }
+  },
+  SET_GENRES(state, genres) {
+    state.genres = genres
+  },
 }
