@@ -201,7 +201,14 @@ export default {
 
   methods: {
     searchByName() {
-      this.$router.push(`/search?name=${this.search}`);
+      const to = `/search?name=${this.search}`;
+      if (this.$route.path === '/search') {
+        if (process.client) {
+          window.location = to;
+        }
+      } else {
+        this.$router.push(to)
+      }
     }
   }
 }

@@ -6,7 +6,7 @@
           <h2 class="weight-semi-bold">
             Add new manga
           </h2>
-          <el-collapse>
+          <el-collapse v-loading="isAdding">
             <el-collapse-item
               title="Info"
               name="1"
@@ -33,7 +33,7 @@
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="Name">
-                  <el-input v-model="form.name" />
+                  <el-input v-model="form.mangaName" />
                 </el-form-item>
                 <el-form-item label="Author">
                   <el-input v-model="form.author" />
@@ -63,16 +63,16 @@
           </h2>
           <el-table
             v-loading="isLoading"
-            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="mangaList.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
-              label="Date"
-              prop="date"
+              label="Name"
+              prop="manga_name"
             />
             <el-table-column
-              label="Name"
-              prop="name"
+              label="#Chapter"
+              prop="num_of_chap"
             />
             <el-table-column
               align="right"
@@ -114,59 +114,52 @@
 export default {
   data() {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-02',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }],
       isLoading: false,
+      isAdding: false,
       search: '',
       fileList: [],
       mangaList: [],
       form: {
         cover: '',
-        name: '',
+        mangaName: '',
         author: '',
         description: ''
       }
     }
   },
   mounted() {
-    this.isLoading = true;
-    this.getMangas({ page: 1 }).then(data => {
-      this.mangaList = data;
-      this.isLoading = false;
-    });
+    this.getMangaList();
   },
   methods: {
+    getMangaList() {
+      this.isLoading = true;
+      this.getMangas({ page: 1 }).then(data => {
+        this.mangaList = data;
+        this.isLoading = false;
+      });
+    },
     handleFileChange(file) {
       if (file.response) {
         this.form.cover = file.response.image;
       }
     },
     submitManga() {
-      this.addManga(this.form);
+      this.isAdding = true;
+      this.addManga(this.form).then(() => {
+        this.isAdding = false;
+        this.getMangaList();
+      });
     },
     handleEdit(index, row) {
-      this.$router.push('/admin/manga/123');
+      this.$router.push(`/admin/manga/${row.manga_id}`);
     },
     handleDelete(index, row) {
-      this.deleteManga(row.id).then(isSuccess => {
+      this.isLoading = true;
+      this.deleteManga(row.manga_id).then(isSuccess => {
         if (isSuccess) {
           this.mangaList.splice(index, 1);
         }
+        this.isLoading = false;
       });
     }
   },

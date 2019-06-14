@@ -1,8 +1,9 @@
 <template lang="html">
   <div class="content clearfix">
-    <div class="section-block bkg-white">
+    <div class="section-block bkg-white pt-40">
       <div class="row">
         <div class="column width-12">
+          <!--Manga info section-->
           <h2 class="weight-semi-bold mb-40">
             Manga info
           </h2>
@@ -29,7 +30,10 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="Name">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.manga_name" />
+            </el-form-item>
+            <el-form-item label="Genre">
+              <el-input v-model="form.genre" />
             </el-form-item>
             <el-form-item label="Author">
               <el-input v-model="form.author" />
@@ -53,22 +57,77 @@
               </el-button>
             </el-form-item>
           </el-form>
+          <!--Manga info end-->
 
+          <!--Add new chapter-->
+          <h2 class="weight-semi-bold mt-80">
+            Add new chapter
+          </h2>
+          <el-collapse v-loading="isAdding">
+            <el-collapse-item
+              title="Info"
+              name="1"
+            >
+              <el-form
+                ref="form"
+                v-loading="isAdding"
+                :model="formChapter"
+                label-width="120px"
+              >
+                <el-form-item label="Chap number">
+                  <el-input v-model="formChapter.chap_id" />
+                </el-form-item>
+                <el-form-item label="Name">
+                  <el-input v-model="formChapter.chap_name" />
+                </el-form-item>
+                <el-form-item label="Content">
+                  <el-input
+                    v-model="formChapter.chap_content"
+                    :rows="5"
+                    type="textarea"
+                  />
+                </el-form-item>
+                <el-form-item label="Upload image">
+                  <el-upload
+                    :multiple="true"
+                    action="https://vgy.me/upload"
+                    :file-list="fileListChapter"
+                    class="mb-20"
+                    :on-change="handleChapterChange"
+                  >
+                    <el-button
+                      size="small"
+                      type="primary"
+                    >
+                      Upload
+                    </el-button>
+                  </el-upload>
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                    type="primary"
+                    @click="addNewChap"
+                  >
+                    Submit
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </el-collapse-item>
+          </el-collapse>
+          <!--Add new chapter end-->
+
+          <!--Chapter list-->
           <h2 class="weight-semi-bold mt-80">
             Chapters list
           </h2>
           <el-table
             v-loading="isChaptersLoading"
-            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="chapters.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
-              label="Date"
-              prop="date"
-            />
-            <el-table-column
               label="Name"
-              prop="name"
+              prop="chap_name"
             />
             <el-table-column
               align="right"
@@ -100,6 +159,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <!--Chapter list end-->
         </div>
       </div>
     </div>
@@ -110,61 +170,58 @@
 export default {
   data() {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-02',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }],
       isInfoLoading: false,
       isChaptersLoading: false,
+      isAdding: false,
       search: '',
       form: {
-        name: '',
+        manga_name: '',
+        genre: '',
         author: '',
         description: '',
         cover: '',
       },
+      formChapter: {
+        chap_id: '',
+        chap_name: '',
+        chap_content: ''
+      },
       fileList: [],
-      mangaInfo: {},
+      fileListChapter: [],
       chapters: []
     }
   },
 
   mounted() {
     this.isInfoLoading = true;
-    this.isChaptersLoading = true;
     const id = this.$route.params.id;
 
     // Get info
     this.getManga(id).then(data => {
-      this.mangaInfo = data;
+      this.form = {...data};
       this.isInfoLoading = false;
     });
 
     // Get chapters list
-    this.getMangaChapters(id).then(data => {
-      this.chapters = data;
-      this.isChaptersLoading = false;
-    });
+    this.getChapterList(id);
   },
 
   methods: {
+    addNewChap() {
+      const id = this.$route.params.id;
+      this.isAdding = true;
+      const payload = {...this.formChapter};
+      this.addChapter(id, payload).then(isSuccess => {
+        this.isAdding = false;
+        this.getChapterList(id);
+      })
+    },
     submitChange() {
       const id = this.$route.params.id;
       this.isInfoLoading = true;
-      this.updateManga(id, this.form).then(() => {
+      const payload = {...this.form};
+      payload.mangaName = this.form.manga_name;
+      this.updateManga(id, payload).then(() => {
         this.isInfoLoading = false;
       })
     },
@@ -173,8 +230,14 @@ export default {
         this.form.cover = file.response.image;
       }
     },
+    handleChapterChange(file, fileList) {
+      this.formChapter.chap_content = fileList.map(file => {
+        return file.response ? file.response.image : '';
+      }).join(',\n');
+    },
     handleEdit(index, row) {
-      this.$router.push('/admin/manga/123/123');
+      const id = this.$route.params.id;
+      this.$router.push(`/admin/manga/${id}/${row.chap_id}`);
     },
     handleDelete(index, row) {
       const id = this.$route.params.id;
@@ -185,6 +248,13 @@ export default {
           this.chapters.splice(index, 1);
         }
       })
+    },
+    getChapterList(id) {
+      this.isChaptersLoading = true;
+      this.getMangaChapters(id).then(data => {
+        this.chapters = data;
+        this.isChaptersLoading = false;
+      });
     }
   },
 }

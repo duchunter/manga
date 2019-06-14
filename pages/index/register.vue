@@ -8,7 +8,7 @@
         />
       </div>
       <div class="row">
-        <div class="column width-5 offset-7">
+        <div class="column width-5 offset-7" v-loading="isLoading">
           <div class="hero-content split-hero-content">
             <div class="hero-content-inner left">
               <h3>Register an Account</h3>
@@ -76,6 +76,7 @@
 export default {
   data() {
     return {
+      isLoading: false,
       form: {
         username: '',
         password: ''
@@ -85,7 +86,10 @@ export default {
 
   methods: {
     submit() {
-      this.signUp(this.form);
+      this.isLoading = true;
+      this.signUp(this.form).then(() => {
+        this.isLoading = false;
+      });
     }
   }
 }

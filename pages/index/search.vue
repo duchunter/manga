@@ -10,7 +10,7 @@
       <div class="row" v-loading="isLoading">
         <div class="column width-12">
           <div class="row flex grid content-grid-4">
-            <div v-for="index in 3" :key="index" class="grid-item center">
+            <div v-for="item in results" :key="item.manga_id" class="grid-item center">
               <div
                 class="thumbnail rounded img-scale-in"
                 data-hover-easing="easeInOut"
@@ -18,12 +18,12 @@
                 data-hover-bkg-color="#ffffff"
                 data-hover-bkg-opacity="0.9"
               >
-                <nuxt-link class="overlay-link" to="/123">
-                  <img :src="`/img/cover${index % 3 + 1}.jpg`" style="max-height: 350px"/>
+                <nuxt-link class="overlay-link" :to="`/${item.manga_id}`">
+                  <img :src="item.cover" style="max-height: 350px"/>
                   <span class="overlay-info">
                     <span>
                       <span>
-                        Read Full Article
+                        Read now
                       </span>
                     </span>
                   </span>
@@ -32,10 +32,10 @@
                   dummy
                 </p>
                 <h3 class="weight-semi-bold center mb-10">
-                  Manga name
+                  {{item.manga_name}}
                 </h3>
                 <p class="center">
-                  Some description about this manga
+                  {{item.author}}
                 </p>
               </div>
             </div>

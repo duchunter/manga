@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="content clearfix">
-    <div class="section-block bkg-white">
+    <div class="section-block bkg-white pt-40">
       <div class="row">
         <div class="column width-12">
           <h2 class="weight-semi-bold mb-40">
@@ -13,20 +13,22 @@
             label-width="120px"
           >
             <el-form-item label="Name">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.chap_name" />
             </el-form-item>
             <el-form-item label="Content">
               <el-input
-                v-model="form.description"
+                v-model="form.chap_content"
                 :rows="5"
                 type="textarea"
               />
             </el-form-item>
             <el-form-item label="Upload image">
               <el-upload
+                :multiple="true"
                 action="https://vgy.me/upload"
                 :file-list="fileList"
                 class="mb-20"
+                :on-change="handleFileChange"
               >
                 <el-button
                   size="small"
@@ -62,16 +64,16 @@
           </h2>
           <el-table
             v-loading="isCommentsLoading"
-            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="comments.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
-              label="Date"
-              prop="date"
+              label="Name"
+              prop="user_name"
             />
             <el-table-column
-              label="Name"
-              prop="name"
+              label="Content"
+              prop="content"
             />
             <el-table-column
               align="right"
@@ -98,33 +100,15 @@
 export default {
   data() {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-02',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }],
       isInfoLoading: false,
       isCommentsLoading: false,
       search: '',
       img: '',
       form: {
-        name: '',
-        content: ''
+        chap_name: '',
+        chap_content: ''
       },
       fileList: [],
-      chapterInfo: {},
       comments: []
     }
   },
@@ -137,7 +121,7 @@ export default {
 
     // Get info
     this.getChapter(mangaId, chapterId).then(data => {
-      this.chapterInfo = data;
+      this.form = {...data};
       this.isInfoLoading = false;
     });
 
@@ -149,6 +133,11 @@ export default {
   },
 
   methods: {
+    handleFileChange(file, fileList) {
+      this.img = fileList.map(file => {
+        return file.response ? file.response.image : '';
+      }).join(',\n');
+    },
     submitChange() {
       this.isInfoLoading = true;
       const mangaId = this.$route.params.id;

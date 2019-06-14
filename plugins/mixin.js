@@ -84,7 +84,6 @@ Vue.mixin({
         const token = this.$store.state.token;
         const res = await this.$axios.post(`/mangas`, payload, getHeader(token));
         this.$message.success('Done');
-        this.$router.push(`/admin/mangas/${res.data}`)
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
       }
@@ -106,6 +105,18 @@ Vue.mixin({
       try {
         const token = this.$store.state.token;
         const res = await this.$axios.delete(`/mangas/${id}`, getHeader(token));
+        this.$message.success('Done');
+        return true;
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+        return false;
+      }
+    },
+
+    async addChapter(mangaId, payload) {
+      try {
+        const token = this.$store.state.token;
+        const res = await this.$axios.post(`/mangas/${mangaId}/chapters/`, payload, getHeader(token));
         this.$message.success('Done');
         return true;
       } catch (e) {
@@ -143,7 +154,7 @@ Vue.mixin({
       try {
         const token = this.$store.state.token;
         const res = await this.$axios.get(`/mangas/subscribed`, getHeader(token));
-        return res.body;
+        return res.data;
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
         return [];
@@ -157,7 +168,7 @@ Vue.mixin({
           this.$router.push('/signin');
           return;
         }
-        const payload = { subcribed: true };
+        const payload = { subscribed: true };
         const res = await this.$axios.put(`/mangas/${id}/subscription`, payload, getHeader(token));
         this.$message.success('Done');
       } catch (e) {
@@ -176,6 +187,21 @@ Vue.mixin({
         this.$message.success('Done');
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
+      }
+    },
+
+    async postComment(mangaId, chapterId, content) {
+      try {
+        const token = this.$store.state.token;
+        if (!token) {
+          this.$router.push('/signin');
+          return;
+        }
+        const res = await this.$axios.post(`/mangas/${mangaId}/chapters/${chapterId}/comments`, { content }, getHeader(token));
+        return true;
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+        return false;
       }
     },
 
@@ -199,7 +225,7 @@ Vue.mixin({
           query += `&gname=${name}`
         }
         const res = await this.$axios.get(`/mangas${query}`);
-        return res.body;
+        return res.data;
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
         return [];

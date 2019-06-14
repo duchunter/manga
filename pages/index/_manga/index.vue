@@ -7,16 +7,16 @@
       >
         <div class="column width-4">
           <img
-            src="/img/cover1.jpg"
-            alt=""
+            :src="mangaInfo.cover"
+            style="height: 400px"
           >
         </div>
         <div class="column width-8">
           <h1 class="weight-semi-bold">
-            Manga name
+            {{mangaInfo.manga_name}}
           </h1>
           <h3 class="weight-semi-bold">
-            Genre: test
+            Genre: {{mangaInfo.genre}}
           </h3>
           <el-rate
             v-model="value"
@@ -26,7 +26,7 @@
             score-template="{value} points"
           />
           <p class="mt-20">
-            Description: a very long texta very long texta very long texta very long texta very long texta very long text
+            Description: {{mangaInfo.description}}
           </p>
           <el-button
             type="success"
@@ -50,16 +50,12 @@
       >
         <div class="column-width-12">
           <el-table
-            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="chapters.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
-              label="Date"
-              prop="date"
-            />
-            <el-table-column
               label="Name"
-              prop="name"
+              prop="chap_name"
             />
             <el-table-column
               align="right"
@@ -96,23 +92,6 @@ export default {
   data() {
     return {
       value: 3.7,
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-02',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }],
       isInfoLoading: false,
       isChaptersLoading: false,
       search: '',
@@ -149,7 +128,8 @@ export default {
       this.rateManga(id, value);
     },
     handleRead(index, row) {
-      this.$router.push('/123/123');
+      const id = this.$route.params.manga;
+      this.$router.push(`/${id}/${row.chap_id}`);
     }
   },
 }

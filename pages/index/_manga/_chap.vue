@@ -6,16 +6,26 @@
     >
       <div class="row">
         <div class="column width-12 center">
-          <h1 class="weight-semi-bold">
-            Chapter name
+          <h1 class="weight-semi-bold mb-40">
+            {{ chapterInfo.chap_name }}
           </h1>
 
           <img
-            v-for="index in 2"
+            v-for="(img, index) in chapterInfo.chap_content.split(',\n')"
             :key="index"
-            :src="`../../img/page${index}.jpg`"
-            alt=""
+            :src="img"
           >
+        </div>
+      </div>
+
+      <div class="row flex mt-80">
+        <div class="column width-12 center">
+          <el-button type="primary" @click="lastChap">
+            Last chapter
+          </el-button>
+          <el-button type="primary" @click="nextChap">
+            Next chapter
+          </el-button>
         </div>
       </div>
     </div>
@@ -42,12 +52,13 @@
               <div class="author-content">
                 <div class="row">
                   <div class="column width-12">
-                    <el-input
-                      v-model="textarea"
-                      type="textarea"
-                      :rows="3"
+                    <textarea
+                      v-model="commentText"
+                      @keyup.enter="submitComment"
+                      class="form-element rounded medium"
                       placeholder="Comment"
-                    />
+                    >
+                    </textarea>
                   </div>
                 </div>
               </div>
@@ -57,8 +68,8 @@
       </div>
 
       <div
-        v-for="index in 3"
-        :key="index"
+        v-for="(item, index) in comments"
+        :key="'comment' + index"
         v-loading="isCommentsLoading"
         class="post-author"
       >
@@ -75,10 +86,12 @@
                 <div class="row">
                   <div class="column width-12">
                     <div class="name">
-                      <a href="#">Henry Valiant</a>
+                      <a style="pointer-events: none">
+                        {{item.user_name}}
+                      </a>
                     </div>
                     <p class="author-title">
-                      WordPress Evangelist, JS Guru and Beer Lover
+                      {{item.content}}
                     </p>
                   </div>
                 </div>
@@ -97,15 +110,16 @@ export default {
     return {
       isInfoLoading: false,
       isCommentsLoading: false,
-      textarea: '',
-      chapterInfo: {},
+      commentText: '',
+      chapterInfo: {
+        chap_content: ''
+      },
       comments: []
     }
   },
 
   mounted() {
     this.isInfoLoading = true;
-    this.isCommentsLoading = true;
     const mangaId = this.$route.params.manga;
     const chapterId = this.$route.params.chap;
 
@@ -116,16 +130,47 @@ export default {
     });
 
     // Get comments list
-    this.getChapterComment(mangaId, chapterId).then(data => {
-      this.comments = data;
-      this.isCommentsLoading = false;
-    });
+    this.getComments(mangaId, chapterId);
   },
+
+  methods: {
+    submitComment() {
+      const mangaId = this.$route.params.manga;
+      const chapterId = this.$route.params.chap;
+      this.postComment(mangaId, chapterId, this.commentText).then(isSuccess => {
+        this.getComments(mangaId, chapterId);
+      });
+    },
+
+    getComments(mangaId, chapterId) {
+      this.isCommentsLoading = true;
+      this.getChapterComment(mangaId, chapterId).then(data => {
+        this.comments = data;
+        this.isCommentsLoading = false;
+      });
+    },
+
+    lastChap() {
+      const mangaId = this.$route.params.manga;
+      const chapterId = this.$route.params.chap;
+      if (process.client) {
+        window.location = `/${mangaId}/${parseInt(chapterId) - 1}`
+      }
+    },
+
+    nextChap() {
+      const mangaId = this.$route.params.manga;
+      const chapterId = this.$route.params.chap;
+      if (process.client) {
+        window.location = `/${mangaId}/${parseInt(chapterId) + 1}`
+      }
+    }
+  }
 }
 </script>
 
 <style lang="css" scoped>
 .post-author {
-  border-top-width: 0px;
+  border-top-width: 0;
 }
 </style>

@@ -49,8 +49,8 @@
         >
           <div class="row flex grid content-grid-2">
             <div
-              v-for="index in 9"
-              :key="index"
+              v-for="item in mangaList"
+              :key="item.manga_id"
               class="grid-item center"
             >
               <div
@@ -62,16 +62,16 @@
               >
                 <nuxt-link
                   class="overlay-link"
-                  to="/123"
+                  :to="`/${item.manga_id}`"
                 >
                   <img
-                    :src="`/img/cover${index % 3 + 1}.jpg`"
-                    style="max-height: 500px"
+                    :src="item.cover"
+                    style="height: 500px"
                   >
                   <span class="overlay-info">
                     <span>
                       <span>
-                        Read Full Article
+                        Read now
                       </span>
                     </span>
                   </span>
@@ -83,10 +83,10 @@
                   dummy
                 </p>
                 <h3 class="weight-semi-bold center mb-10">
-                  Manga name
+                  {{item.manga_name}}
                 </h3>
                 <p class="center">
-                  Some description about this manga
+                  {{item.author}}
                 </p>
               </div>
             </div>
@@ -101,12 +101,12 @@
 
             <div class="row flex grid content-grid-2">
               <div
-                v-for="index in 10"
-                :key="index"
+                v-for="genre in genres"
+                :key="genre"
                 class="grid-item"
               >
                 <h4>
-                  Genre
+                  {{genre}}
                 </h4>
               </div>
             </div>
