@@ -122,7 +122,7 @@
           </h2>
           <el-table
             v-loading="isChaptersLoading"
-            :data="chapters.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="chapters.filter(data => !search || data.chap_name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
@@ -220,7 +220,6 @@ export default {
       const id = this.$route.params.id;
       this.isInfoLoading = true;
       const payload = {...this.form};
-      payload.mangaName = this.form.manga_name;
       this.updateManga(id, payload).then(() => {
         this.isInfoLoading = false;
       })

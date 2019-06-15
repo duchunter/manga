@@ -13,10 +13,10 @@
         </div>
         <div class="column width-8">
           <h1 class="weight-semi-bold">
-            {{mangaInfo.manga_name}}
+            {{ mangaInfo.manga_name }}
           </h1>
           <h3 class="weight-semi-bold">
-            Genre: {{mangaInfo.genre}}
+            Genre: {{ mangaInfo.genre }}
           </h3>
           <el-rate
             v-model="value"
@@ -26,7 +26,7 @@
             score-template="{value} points"
           />
           <p class="mt-20">
-            Description: {{mangaInfo.description}}
+            Description: {{ mangaInfo.description }}
           </p>
           <el-button
             type="success"
@@ -50,7 +50,7 @@
       >
         <div class="column-width-12">
           <el-table
-            :data="chapters.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="chapters.filter(data => !search || data.chap_name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
@@ -91,7 +91,7 @@
 export default {
   data() {
     return {
-      value: 3.7,
+      value: 0,
       isInfoLoading: false,
       isChaptersLoading: false,
       search: '',
@@ -108,6 +108,7 @@ export default {
     // Get info
     this.getManga(id).then(data => {
       this.mangaInfo = data;
+      this.value = parseInt(data.rating) || 0;
       this.isInfoLoading = false;
     });
 

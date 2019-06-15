@@ -166,14 +166,13 @@ export default {
   data() {
     return {
       search: '',
-      genres: ['Hentai', 'Action', 'Ecchi', 'Drama']
     }
   },
 
   computed: {
     isLoggedIn() { return this.$store.state.isLoggedIn },
     isAdmin() { return this.$store.state.isAdmin },
-    // genres() { return this.$store.state.genres },
+    genres() { return this.$store.state.genres },
     dividedGenre() {
       const list = [...this.genres];
       const length = list.length / 3;
@@ -188,13 +187,26 @@ export default {
     if (process.client) {
       const token = window.localStorage.getItem('token');
       if (token) {
-        this.$store.commit('SET_TOKEN', token);
-        this.$store.commit('SET_LOGGED_IN', true);
-        this.$store.commit('SET_ADMIN', true);
+        this.getUserInfo(token).then(data => {
+          if (data) {
+            this.$store.commit('SET_TOKEN', token);
+            this.$store.commit('SET_LOGGED_IN', true);
+            this.$store.commit('SET_ADMIN', data.isAdmin);
+            this.$store.commit('SET_USER', data.user_name);
+          } else {
+            window.localStorage.removeItem('token');
+            this.$router.push('/signin');
+            this.$store.commit('SET_TOKEN', '');
+            this.$store.commit('SET_LOGGED_IN', false);
+            this.$store.commit('SET_ADMIN', false);
+            this.$store.commit('SET_USER', '');
+          }
+        });
       } else {
         this.$store.commit('SET_TOKEN', '');
         this.$store.commit('SET_LOGGED_IN', false);
         this.$store.commit('SET_ADMIN', false);
+        this.$store.commit('SET_USER', '');
       }
     }
   },

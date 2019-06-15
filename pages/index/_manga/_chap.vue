@@ -20,10 +20,16 @@
 
       <div class="row flex mt-80">
         <div class="column width-12 center">
-          <el-button type="primary" @click="lastChap">
+          <el-button
+            type="primary"
+            @click="lastChap"
+          >
             Last chapter
           </el-button>
-          <el-button type="primary" @click="nextChap">
+          <el-button
+            type="primary"
+            @click="nextChap"
+          >
             Next chapter
           </el-button>
         </div>
@@ -52,13 +58,12 @@
               <div class="author-content">
                 <div class="row">
                   <div class="column width-12">
-                    <textarea
+                    <input
                       v-model="commentText"
-                      @keyup.enter="submitComment"
                       class="form-element rounded medium"
                       placeholder="Comment"
+                      @keyup.enter="submitComment"
                     >
-                    </textarea>
                   </div>
                 </div>
               </div>
@@ -87,11 +92,11 @@
                   <div class="column width-12">
                     <div class="name">
                       <a style="pointer-events: none">
-                        {{item.user_name}}
+                        {{ item.user_name }} - {{ $moment(item.time_up).fromNow() }}
                       </a>
                     </div>
                     <p class="author-title">
-                      {{item.content}}
+                      {{ item.content }}
                     </p>
                   </div>
                 </div>

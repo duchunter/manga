@@ -13,11 +13,16 @@ Vue.mixin({
         const token = res.data;
         this.$store.commit('SET_TOKEN', token);
         this.$store.commit('SET_LOGGED_IN', true);
-        this.$store.commit('SET_ADMIN', true);
         if (process.client) {
           window.localStorage.setItem('token', token);
         }
         this.$router.push('/');
+        this.getUserInfo(token).then(data => {
+          if (data) {
+            this.$store.commit('SET_ADMIN', data.isAdmin);
+            this.$store.commit('SET_USER', data.user_name);
+          }
+        })
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
       }
@@ -37,6 +42,7 @@ Vue.mixin({
       this.$store.commit('SET_TOKEN', '');
       this.$store.commit('SET_LOGGED_IN', false);
       this.$store.commit('SET_ADMIN', false);
+      this.$store.commit('SET_USER', '');
       if (process.client) {
         window.localStorage.removeItem('token');
       }
@@ -150,6 +156,27 @@ Vue.mixin({
     },
 
     // Authenticated
+    async getUserInfo(token) {
+      try {
+        const jwt = token || this.$store.state.token;
+        const res = await this.$axios.get(`/info`, getHeader(jwt));
+        return res.data;
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+        return null;
+      }
+    },
+
+    async changePassword(payload) {
+      try {
+        const token = this.$store.state.token;
+        const res = await this.$axios.put(`/password`, payload, getHeader(token));
+        this.$message.success('Done');
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+      }
+    },
+
     async getSubscribedMangas() {
       try {
         const token = this.$store.state.token;
@@ -183,7 +210,7 @@ Vue.mixin({
           this.$router.push('/signin');
           return;
         }
-        const res = await this.$axios.put(`/mangas/${id}/rating`, { rating }, getHeader(token));
+        const res = await this.$axios.put(`/mangas/${id}/rating`, { point: rating }, getHeader(token));
         this.$message.success('Done');
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
@@ -222,7 +249,7 @@ Vue.mixin({
           query += `&genre=${genre}`
         }
         if (name) {
-          query += `&gname=${name}`
+          query += `&name=${name}`
         }
         const res = await this.$axios.get(`/mangas${query}`);
         return res.data;
