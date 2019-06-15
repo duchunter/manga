@@ -150,6 +150,27 @@ Vue.mixin({
     },
 
     // Authenticated
+    async getUserInfo(token) {
+      try {
+        const jwt = token || this.$store.state.token;
+        const res = await this.$axios.get(`/info`, getHeader(jwt));
+        return res.data;
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+        return null;
+      }
+    },
+
+    async changePassword(payload) {
+      try {
+        const token = this.$store.state.token;
+        const res = await this.$axios.put(`/password`, payload, getHeader(token));
+        this.$message.success('Done');
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+      }
+    },
+
     async getSubscribedMangas() {
       try {
         const token = this.$store.state.token;
@@ -183,7 +204,7 @@ Vue.mixin({
           this.$router.push('/signin');
           return;
         }
-        const res = await this.$axios.put(`/mangas/${id}/rating`, { rating }, getHeader(token));
+        const res = await this.$axios.put(`/mangas/${id}/rating`, { point: rating }, getHeader(token));
         this.$message.success('Done');
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
@@ -222,7 +243,7 @@ Vue.mixin({
           query += `&genre=${genre}`
         }
         if (name) {
-          query += `&gname=${name}`
+          query += `&name=${name}`
         }
         const res = await this.$axios.get(`/mangas${query}`);
         return res.data;

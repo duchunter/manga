@@ -10,7 +10,7 @@
               alt="Avatar"
             >
             <h3 class="weight-semi-bold">
-              User name
+              {{ user }}
             </h3>
           </div>
         </div>
@@ -19,6 +19,7 @@
           <div class="box rounded shadow center">
             <el-form
               ref="form"
+              v-loading="isLoading"
               :model="form"
             >
               <el-form-item
@@ -36,7 +37,7 @@
                 prop="checkPass"
               >
                 <el-input
-                  v-model="form.checkPass"
+                  v-model="form.newPass"
                   type="password"
                   autocomplete="off"
                 />
@@ -71,19 +72,36 @@
 export default {
   data() {
     return {
+      isLoading: false,
       form: {
         pass: '',
+        newPass: '',
         checkPass: '',
       },
     };
   },
 
+  computed: {
+    user() { return this.$store.state.user }
+  },
+
   methods: {
     submitForm(formName) {
+      const { pass, newPass, checkPass } = this.form;
+      if (!pass || !newPass || !checkPass) {
+        this.$message.error('Please enter all fields');
+        return;
+      }
 
-    },
-    resetForm(formName) {
+      if (newPass !== checkPass) {
+        this.$message.error('New passwords not match');
+        return;
+      }
 
+      this.isLoading = true;
+      this.changePassword(this.form).then(() => {
+        this.isLoading = false;
+      });
     }
   }
 }

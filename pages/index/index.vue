@@ -10,7 +10,7 @@
           height="80vh"
         >
           <el-carousel-item
-            v-for="item in 4"
+            v-for="item in 5"
             :key="item"
           >
             <div
@@ -83,13 +83,22 @@
                   dummy
                 </p>
                 <h3 class="weight-semi-bold center mb-10">
-                  {{item.manga_name}}
+                  {{ item.manga_name }}
                 </h3>
                 <p class="center">
-                  {{item.author}}
+                  {{ item.author }}
                 </p>
               </div>
             </div>
+          </div>
+
+          <div class="row center">
+            <el-button
+              type="success"
+              @click="getMangaList"
+            >
+              Show more
+            </el-button>
           </div>
         </div>
 
@@ -106,7 +115,7 @@
                 class="grid-item"
               >
                 <h4>
-                  {{genre}}
+                  {{ genre }}
                 </h4>
               </div>
             </div>
@@ -123,6 +132,7 @@
 export default {
   data() {
     return {
+      page: 1,
       isLoading: false,
       mangaList: []
     }
@@ -133,11 +143,21 @@ export default {
   },
 
   mounted() {
-    this.isLoading = true;
-    this.getMangas({ page: 1 }).then(data => {
-      this.mangaList = data;
-      this.isLoading = false;
-    });
+    this.page = 1;
+    this.getMangaList();
+  },
+
+  methods: {
+    getMangaList() {
+      this.isLoading = true;
+      this.getMangas({ page: this.page }).then(data => {
+        this.mangaList = [...this.mangaList, ...data];
+        this.isLoading = false;
+        if (data.length > 0) {
+          this.page += 1;
+        }
+      });
+    }
   }
 }
 </script>

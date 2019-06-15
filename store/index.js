@@ -1,6 +1,7 @@
 export const state = () => ({
   isLoggedIn: false,
   isAdmin: false,
+  user: '',
   token: '',
   genres: []
 })
@@ -11,6 +12,9 @@ export const mutations = {
   },
   SET_ADMIN(state, isAdmin) {
     state.isAdmin = isAdmin
+  },
+  SET_USER(state, user) {
+    state.user = user
   },
   SET_TOKEN(state, token) {
     state.token = token
