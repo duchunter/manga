@@ -114,9 +114,9 @@
                 :key="genre"
                 class="grid-item"
               >
-                <h4>
+                <nuxt-link :to="`/search?genre=${genre}`">
                   {{ genre }}
-                </h4>
+                </nuxt-link>
               </div>
             </div>
           </div>

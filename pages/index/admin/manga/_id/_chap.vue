@@ -64,7 +64,7 @@
           </h2>
           <el-table
             v-loading="isCommentsLoading"
-            :data="comments.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="comments.filter(data => !search || data.user_name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
@@ -74,6 +74,10 @@
             <el-table-column
               label="Content"
               prop="content"
+            />
+            <el-table-column
+              label="Added"
+              prop="time_up"
             />
             <el-table-column
               align="right"

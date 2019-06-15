@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="content clearfix">
-    <div class="section-block bkg-white">
+    <div class="section-block bkg-white pt-40">
       <div class="row">
         <div class="column width-12">
           <h2 class="weight-semi-bold">
@@ -33,7 +33,7 @@
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="Name">
-                  <el-input v-model="form.mangaName" />
+                  <el-input v-model="form.manga_name" />
                 </el-form-item>
                 <el-form-item label="Author">
                   <el-input v-model="form.author" />
@@ -63,12 +63,19 @@
           </h2>
           <el-table
             v-loading="isLoading"
-            :data="mangaList.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="mangaList.filter(data => !search || data.manga_name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
           >
             <el-table-column
+              type="index"
+            />
+            <el-table-column
               label="Name"
               prop="manga_name"
+            />
+            <el-table-column
+              label="ID"
+              prop="manga_id"
             />
             <el-table-column
               label="#Chapter"
@@ -104,6 +111,15 @@
               </template>
             </el-table-column>
           </el-table>
+
+          <div class="mt-40">
+            <el-button
+              type="success"
+              @click="getMangaList"
+            >
+              Show more
+            </el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -114,6 +130,7 @@
 export default {
   data() {
     return {
+      page: 1,
       isLoading: false,
       isAdding: false,
       search: '',
@@ -121,21 +138,25 @@ export default {
       mangaList: [],
       form: {
         cover: '',
-        mangaName: '',
+        manga_name: '',
         author: '',
         description: ''
       }
     }
   },
   mounted() {
+    this.page = 1;
     this.getMangaList();
   },
   methods: {
     getMangaList() {
       this.isLoading = true;
-      this.getMangas({ page: 1 }).then(data => {
-        this.mangaList = data;
+      this.getMangas({ page: this.page }).then(data => {
+        this.mangaList = [...this.mangaList, ...data];
         this.isLoading = false;
+        if (data.length > 0) {
+          this.page += 1;
+        }
       });
     },
     handleFileChange(file) {
@@ -147,6 +168,8 @@ export default {
       this.isAdding = true;
       this.addManga(this.form).then(() => {
         this.isAdding = false;
+        this.page = 1;
+        this.mangaList = [];
         this.getMangaList();
       });
     },

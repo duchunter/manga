@@ -9,6 +9,9 @@
             style="width: 100%"
           >
             <el-table-column
+              type="index"
+            />
+            <el-table-column
               label="Name"
               prop="user_name"
             />

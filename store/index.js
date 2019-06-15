@@ -20,6 +20,9 @@ export const mutations = {
     state.token = token
   },
   SET_GENRES(state, genres) {
-    state.genres = genres
+    state.genres = genres.map(item => {
+      const name = item.gen_name;
+      return name[0].toUpperCase() + name.slice(1);
+    })
   },
 }

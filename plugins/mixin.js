@@ -13,11 +13,16 @@ Vue.mixin({
         const token = res.data;
         this.$store.commit('SET_TOKEN', token);
         this.$store.commit('SET_LOGGED_IN', true);
-        this.$store.commit('SET_ADMIN', true);
         if (process.client) {
           window.localStorage.setItem('token', token);
         }
         this.$router.push('/');
+        this.getUserInfo(token).then(data => {
+          if (data) {
+            this.$store.commit('SET_ADMIN', data.isAdmin);
+            this.$store.commit('SET_USER', data.user_name);
+          }
+        })
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
       }
@@ -37,6 +42,7 @@ Vue.mixin({
       this.$store.commit('SET_TOKEN', '');
       this.$store.commit('SET_LOGGED_IN', false);
       this.$store.commit('SET_ADMIN', false);
+      this.$store.commit('SET_USER', '');
       if (process.client) {
         window.localStorage.removeItem('token');
       }
