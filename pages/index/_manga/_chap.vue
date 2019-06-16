@@ -144,6 +144,7 @@ export default {
       const chapterId = this.$route.params.chap;
       this.postComment(mangaId, chapterId, this.commentText).then(isSuccess => {
         this.getComments(mangaId, chapterId);
+        this.commentText = '';
       });
     },
 

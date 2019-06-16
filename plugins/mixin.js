@@ -61,6 +61,17 @@ Vue.mixin({
       }
     },
 
+    async getAllMangas() {
+      try {
+        const token = this.$store.state.token;
+        const res = await this.$axios.get('/admin/mangas', getHeader(token));
+        return res.data;
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+        return []
+      }
+    },
+
     async updateUser(id, payload) {
       try {
         const token = this.$store.state.token;
@@ -271,6 +282,16 @@ Vue.mixin({
       } catch (e) {
         this.$message.error(e.response.data.message || e.toString());
         return {};
+      }
+    },
+
+    async getMangaGenres(id) {
+      try {
+        const res = await this.$axios.get(`/mangas/${id}/genres`);
+        return res.data;
+      } catch (e) {
+        this.$message.error(e.response.data.message || e.toString());
+        return [];
       }
     },
 

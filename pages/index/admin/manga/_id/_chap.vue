@@ -68,6 +68,9 @@
             style="width: 100%"
           >
             <el-table-column
+              type="index"
+            />
+            <el-table-column
               label="Name"
               prop="user_name"
             />
@@ -131,7 +134,12 @@ export default {
 
     // Get comments list
     this.getChapterComment(mangaId, chapterId).then(data => {
-      this.comments = data;
+      this.comments = data.map(comment => {
+        return {
+          ...comment,
+          time_up: this.$moment(comment.time_up).format('DD-MM-YYYY, hh:mm')
+        }
+      });
       this.isCommentsLoading = false;
     });
   },

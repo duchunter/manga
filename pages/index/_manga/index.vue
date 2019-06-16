@@ -16,7 +16,7 @@
             {{ mangaInfo.manga_name }}
           </h1>
           <h3 class="weight-semi-bold">
-            Genre: {{ mangaInfo.genre }}
+            Genre: {{ genres }}
           </h3>
           <el-rate
             v-model="value"
@@ -58,6 +58,10 @@
               prop="chap_name"
             />
             <el-table-column
+              label="Added"
+              prop="time_up"
+            />
+            <el-table-column
               align="right"
             >
               <template
@@ -96,6 +100,7 @@ export default {
       isChaptersLoading: false,
       search: '',
       mangaInfo: {},
+      genres: '',
       chapters: []
     }
   },
@@ -112,9 +117,22 @@ export default {
       this.isInfoLoading = false;
     });
 
+    // Get genres
+    this.getMangaGenres(id).then(data => {
+      this.genres = data.map(item => {
+        const name = item.gen_name.trim();
+        return name[0].toUpperCase() + name.slice(1);
+      }).join(', ');
+    });
+
     // Get chapters list
     this.getMangaChapters(id).then(data => {
-      this.chapters = data;
+      this.chapters = data.map(chap => {
+        return {
+          ...chap,
+          time_up: this.$moment(chap.time_up).format('DD-MM-YYYY')
+        }
+      });
       this.isChaptersLoading = false;
     });
   },

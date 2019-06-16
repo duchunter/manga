@@ -1,22 +1,29 @@
 <template>
-  <aside class="side-navigation-wrapper enter-right" data-no-scrollbar data-animation="push-in">
+  <aside
+    class="side-navigation-wrapper enter-right"
+    data-no-scrollbar
+    data-animation="push-in"
+  >
     <div class="side-navigation-scroll-pane">
       <div class="side-navigation-inner">
         <div class="side-navigation-header">
           <div class="navigation-hide side-nav-hide">
             <a href="#">
-              <span class="icon-cancel medium"></span>
+              <span class="icon-cancel medium" />
             </a>
           </div>
         </div>
         <nav class="side-navigation nav-block">
-          <div class="field-wrapper" style="padding: 20px 5%">
+          <div
+            class="field-wrapper"
+            style="padding: 20px 5%"
+          >
             <input
+              v-model="search"
               type="text"
               class="form-name form-element rounded medium"
               style="height: 40px; margin-bottom: 0"
               placeholder="Search"
-              v-model="search"
               @keyup.enter="searchByName"
             >
           </div>
@@ -62,7 +69,10 @@
             </nuxt-link>
 
             <li>
-              <a href="#" class="contains-sub-menu">Genre</a>
+              <a
+                href="#"
+                class="contains-sub-menu"
+              >Genre</a>
               <ul class="sub-menu">
                 <nuxt-link
                   v-for="item in genres"
@@ -100,7 +110,10 @@
             </nuxt-link>
 
             <li>
-              <a v-if="isLoggedIn" @click="signOut">
+              <a
+                v-if="isLoggedIn"
+                @click="signOut"
+              >
                 Sign out
               </a>
             </li>
@@ -116,15 +129,14 @@
 export default {
   data() {
     return {
-      search: '',
-      genres: ['Hentai', 'Action', 'Ecchi', 'Drama']
+      search: ''
     }
   },
 
   computed: {
     isLoggedIn() { return this.$store.state.isLoggedIn },
     isAdmin() { return this.$store.state.isAdmin },
-    // genres() { return this.$store.state.genres },
+    genres() { return this.$store.state.genres },
   },
 
   methods: {

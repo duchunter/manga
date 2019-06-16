@@ -126,8 +126,15 @@
             style="width: 100%"
           >
             <el-table-column
+              type="index"
+            />
+            <el-table-column
               label="Name"
               prop="chap_name"
+            />
+            <el-table-column
+              label="Added"
+              prop="time_up"
             />
             <el-table-column
               align="right"
@@ -198,8 +205,17 @@ export default {
 
     // Get info
     this.getManga(id).then(data => {
-      this.form = {...data};
+      const genre = this.form.genre;
+      this.form = {...data, genre};
       this.isInfoLoading = false;
+    });
+
+    // Get genres
+    this.getMangaGenres(id).then(data => {
+      this.form.genre = data.map(item => {
+        const name = item.gen_name.trim();
+        return name[0].toUpperCase() + name.slice(1);
+      }).join(', ');
     });
 
     // Get chapters list
@@ -251,7 +267,12 @@ export default {
     getChapterList(id) {
       this.isChaptersLoading = true;
       this.getMangaChapters(id).then(data => {
-        this.chapters = data;
+        this.chapters = data.map(chap => {
+          return {
+            ...chap,
+            time_up: this.$moment(chap.time_up).format('DD-MM-YYYY')
+          }
+        });
         this.isChaptersLoading = false;
       });
     }
