@@ -15,8 +15,11 @@
           <h1 class="weight-semi-bold">
             {{ mangaInfo.manga_name }}
           </h1>
-          <h3 class="weight-semi-bold">
-            Genre: {{ genres }}
+          <h3>
+            <span><b>Genre:</b></span> {{ genres }}
+          </h3>
+          <h3>
+            <span><b>Author:</b></span> {{ mangaInfo.author }}
           </h3>
           <el-rate
             v-model="value"
