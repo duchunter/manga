@@ -21,7 +21,7 @@ export const mutations = {
   },
   SET_GENRES(state, genres) {
     state.genres = genres.map(item => {
-      const name = item.gen_name;
+      const name = item.gen_name.trim();
       return name[0].toUpperCase() + name.slice(1);
     })
   },

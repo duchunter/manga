@@ -111,15 +111,6 @@
               </template>
             </el-table-column>
           </el-table>
-
-          <div class="mt-40">
-            <el-button
-              type="success"
-              @click="getMangaList"
-            >
-              Show more
-            </el-button>
-          </div>
         </div>
       </div>
     </div>
@@ -145,18 +136,14 @@ export default {
     }
   },
   mounted() {
-    this.page = 1;
     this.getMangaList();
   },
   methods: {
     getMangaList() {
       this.isLoading = true;
-      this.getMangas({ page: this.page }).then(data => {
-        this.mangaList = [...this.mangaList, ...data];
+      this.getAllMangas().then(data => {
+        this.mangaList = data;
         this.isLoading = false;
-        if (data.length > 0) {
-          this.page += 1;
-        }
       });
     },
     handleFileChange(file) {
@@ -168,8 +155,6 @@ export default {
       this.isAdding = true;
       this.addManga(this.form).then(() => {
         this.isAdding = false;
-        this.page = 1;
-        this.mangaList = [];
         this.getMangaList();
       });
     },
