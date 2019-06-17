@@ -55,6 +55,7 @@
           <el-table
             :data="chapters.filter(data => !search || data.chap_name.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
+            height="400"
           >
             <el-table-column
               label="Name"

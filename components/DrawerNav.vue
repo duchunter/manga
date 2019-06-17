@@ -141,9 +141,8 @@ export default {
 
   methods: {
     searchByName() {
-      if (process.client) {
-        window.location = `/search?name=${this.search}`;
-      }
+      const to = `/search?name=${this.search}`;
+      this.$router.push(to);
     }
   }
 }
