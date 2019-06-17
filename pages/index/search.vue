@@ -83,6 +83,24 @@
       }
     },
 
+    computed: {
+      name() { return this.$route.query.name },
+      genre() { return this.$route.query.genre }
+    },
+
+    watch: {
+      name() {
+        this.page = 1;
+        this.results = [];
+        this.getMangaList();
+      },
+      genre() { 
+        this.page = 1;
+        this.results = [];
+        this.getMangaList();
+      },
+    },
+
     mounted() {
       this.page = 1;
       this.getMangaList();
@@ -90,9 +108,12 @@
 
     methods: {
       getMangaList() {
-        const { name, genre } = this.$route.query;
         this.isLoading = true;
-        this.getMangas({ name, genre, page: this.page }).then(data => {
+        this.getMangas({
+          name: this.name,
+          genre: this.genre,
+          page: this.page
+        }).then(data => {
           this.results = [...this.results, ...data];
           this.isLoading = false;
           if (data.length > 0) {

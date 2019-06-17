@@ -6,6 +6,15 @@
           <!--Manga info section-->
           <h2 class="weight-semi-bold mb-40">
             Manga info
+            <span>
+              <a
+                target="_blank"
+                :href="`/${$route.params.id}`"
+                style="font-size: 16px; cursor: pointer; margin-left: 10px;"
+              >
+                View live
+              </a>
+            </span>
           </h2>
           <el-form
             ref="form"
@@ -123,6 +132,7 @@
           <el-table
             v-loading="isChaptersLoading"
             :data="chapters.filter(data => !search || data.chap_name.toLowerCase().includes(search.toLowerCase()))"
+            height="400"
             style="width: 100%"
           >
             <el-table-column

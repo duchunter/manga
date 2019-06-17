@@ -6,6 +6,7 @@
           <el-table
             v-loading="isLoading"
             :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            height="400"
             style="width: 100%"
           >
             <el-table-column
