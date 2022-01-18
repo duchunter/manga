@@ -29,6 +29,9 @@
                 :limit="1"
                 :file-list="fileList"
                 :on-change="handleFileChange"
+                :data="{
+                  userkey: 'XcYN8K1YXnsVT2zc1sstCaHEa63iRcOX'
+                }"
               >
                 <el-button
                   size="small"
@@ -103,6 +106,9 @@
                     :file-list="fileListChapter"
                     class="mb-20"
                     :on-change="handleChapterChange"
+                    :data="{
+                      userkey: 'XcYN8K1YXnsVT2zc1sstCaHEa63iRcOX'
+                    }"
                   >
                     <el-button
                       size="small"

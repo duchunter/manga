@@ -23,6 +23,9 @@
                     :limit="1"
                     :file-list="fileList"
                     :on-change="handleFileChange"
+                    :data="{
+                      userkey: 'XcYN8K1YXnsVT2zc1sstCaHEa63iRcOX'
+                    }"
                   >
                     <el-button
                       size="small"
